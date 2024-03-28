@@ -124,6 +124,19 @@ export default (html) => {
     if (publishedTimeAttrs.includes(property) || publishedTimeAttrs.includes(name)) {
       entry.published = content
     }
+
+    if(entry.published == null || entry.published.length<8){
+        // https://news.bloomberglaw.com/
+        const regex = /"datePublished"\s*:\s*"([^"]+)"/;
+        const match = html.match(regex);
+        if (match) {
+          const datePublished = match[1];
+          entry.published = datePublished;
+        } else {
+          console.log('No match found');
+        }
+    }
+
   })
 
   return entry
